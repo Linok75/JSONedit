@@ -1,0 +1,28 @@
+#idci-json-editor {
+    margin: 30px auto;
+    width: 700px;
+}
+#idci-json-editor-textarea {
+    width: 700px;
+    height: 300px;
+}
+.idci-json-editor-error {
+    color: red;
+}
+
+
+/* JSON VIEW */
+
+/* striped background */
+.idci-json-editor-tree {
+    background-color: #f3f6fa;
+    background-image: linear-gradient(rgba(255, 255, 255, 1) 50%, transparent 50%, transparent);
+    background-size: 60px 60px;
+    padding: 30px 0 0 5px;
+    background-attachment: local;
+    list-style: none;
+}
+
+.idci-json-editor-tree ul{
+    list-style: none;
+}

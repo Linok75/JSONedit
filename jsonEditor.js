@@ -1,0 +1,1 @@
+var jsonEditor = angular.module('jsonEditor', []);
