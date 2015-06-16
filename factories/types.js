@@ -2,121 +2,86 @@
  * Primitives types
  */
 jsonEditor.factory('string', [function() {
-	var type = 'string';
-	var defaultValue = '';
-
-	var getHtml = function(key, data) {
-		var html = '<li type="string">'+key+' : '+data+'<button ng-click="deleteItem(\''+key+'\')">Delete</button></li>';
-		return html;
+	function String() {
+		this.type = 'string';
+		this.defaultValue = '';
+		this.needKey = true;
+		this.needValue = true;
 	}
 
-	var needKey = true;
-	var needValue = true;
-
-	return {
-		type,
-		getHtml,
-		needKey,
-		needValue,
-		defaultValue
+	String.prototype.getHtml = function(key, data) {
+		var html = '<li type="'+this.type+'">'+key+' : '+data+'<button ng-click="deleteItem(\''+key+'\')">Delete</button></li>';
+		return html;
 	};
+
+	return String;
 }]);
 
 jsonEditor.factory('boolean', [function() {
-	var type = 'boolean';
-	var defaultValue = true;
-
-	var getHtml = function(key, data) {
-		var html = '<li type="boolean">'+key+' : '+data+'<button ng-click="deleteItem(\''+key+'\')">Delete</button></li>';
-		return html;
+	function Boolean() {
+		this.type = 'boolean';
+		this.defaultValue = true;
+		this.needKey = true;
+		this.needValue = true;
 	}
 
-	var needKey = true;
-	var needValue = true;
-
-	return {
-		type,
-		getHtml,
-		needKey,
-		needValue,
-		defaultValue
+	Boolean.prototype.getHtml = function(key, data) {
+		var html = '<li type="'+this.type+'">'+key+' : '+data+'<button ng-click="deleteItem(\''+key+'\')">Delete</button></li>';
+		return html;
 	};
+
+	return Boolean;
 }]);
 
 jsonEditor.factory('object', [function() {
-	var type = 'object';
-	var defaultValue = {};
-
-	var getHtml = function(key, data) {
-		var html = '<li>'+key+' : <button ng-click="deleteItem(\''+key+'\')">Delete</button><ul jsontree="" data="data[\''+key+'\']" type="'+type+'"></ul></li>';
-		return html;
+	function Object() {
+		this.type = 'object';
+		this.defaultValue = {};
+		this.needKey = true;
+		this.needValue = false;
 	}
 
-	var needKey = true;
-	var needValue = false;
-
-	return {
-		type,
-		getHtml,
-		needKey,
-		needValue,
-		defaultValue
+	Object.prototype.getHtml = function(key, data) {
+		var html = '<li>'+key+' : <button ng-click="deleteItem(\''+key+'\')">Delete</button><ul jsontree="" data="data[\''+key+'\']" type="'+this.type+'"></ul></li>';
+		return html;
 	};
+
+	return Object;
 }]);
 
 jsonEditor.factory('array', [function() {
-	var type = 'array';
-	var defaultValue = [];
-
-	var getHtml = function(key, data) {
-		var html = '<li>'+key+' : <button ng-click="deleteItem(\''+key+'\')">Delete</button><ul jsontree="" data="data[\''+key+'\']" type="'+type+'"></ul></li>';
-		return html;
+	function Array() {
+		this.type = 'array';
+		this.defaultValue = [];
+		this.needKey = false;
+		this.needValue = false;
 	}
 
-	var needKey = false;
-	var needValue = false;
-
-	return {
-		type,
-		getHtml,
-		needKey,
-		needValue,
-		defaultValue
+	Array.prototype.getHtml = function(key, data) {
+		var html = '<li>'+key+' : <button ng-click="deleteItem(\''+key+'\')">Delete</button><ul jsontree="" data="data[\''+key+'\']" type="'+this.type+'"></ul></li>';
+		return html;
 	};
+
+	return Array;
 }]);
 
 /**
  * Personnals types
  */
 jsonEditor.factory('step', ['object', function(object) {
-	var type = 'step';
-	var defaultValue = object.defaultValue;
-	var getHtml = object.getHtml;
-	var needKey = object.needKey;
-	var needValue = object.needValue;
+	function Step() {
+		this.type = 'step';
+	}
+	Step.prototype = new object();
 
-
-	return {
-		type,
-		getHtml,
-		needKey,
-		needValue,
-		defaultValue
-	};
+	return Step;
 }]);
 
 jsonEditor.factory('path', ['object', function(object) {
-	var type = 'path';
-	var defaultValue = object.defaultValue;
-	var getHtml = object.getHtml;
-	var needKey = object.needKey;
-	var needValue = object.needValue;
+	function Path() {
+		this.type = 'path';
+	}
+	Path.prototype = new object();
 
-	return {
-		type,
-		getHtml,
-		needKey,
-		needValue,
-		defaultValue
-	};
+	return Path;
 }])

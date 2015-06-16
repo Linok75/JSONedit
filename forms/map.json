@@ -1,0 +1,49 @@
+{
+	"name": {
+		"type": "string",
+		"form": "<input name=\"name\" type=\"text\" value=\"\" />"
+	},
+	"options": {
+		"type": "object",
+		"form": "<input name=\"browsing\" type=\"text\" value=\"linear\" />
+				<input name=\"data-share\" type=\"text\" value=\"session\" />
+				<input name=\"first-step-name\" type=\"text\" value=\"\" />"
+	},
+	"steps": {
+		"type": "objects",
+		"object": {
+			"type": {
+				"type": "string",
+				"form": ""
+			},
+			"options": {
+				"type": "object",
+				"dynamicForm": {
+					"URI": "",
+					"parameters": {
+						"type": "@" 
+					}
+				}
+			}
+		}
+	},
+	"paths": {
+		"type": "arrays",
+		"item": {
+			"type": {
+				"type": "string",
+				"form": ""
+			},
+			"options": {
+				"type": "object",
+				"dynamicForm": {
+					"URI": "",
+					"parameters": {
+						"type": "@",
+						"steps": "@"
+					}
+				}
+			}
+		}
+	}
+}

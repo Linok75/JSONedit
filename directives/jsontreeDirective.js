@@ -10,15 +10,15 @@ jsonEditor.directive('jsontree', ['$compile', 'typeFactory', function($compile, 
 			scope.showAddForm = false;
 			scope.newChildType = 'string';
 			scope.allowedTypes = typeFactory.getArray;
-			scope.needKey = typeFactory.types[scope.type].needKey;
+			scope.typeObject = new typeFactory.types[scope.type]();
 
 			scope.$watch('newChildType', function(newChildType) {
-        		scope.needValue = typeFactory.types[scope.newChildType].needValue;
+        		scope.newChildTypeObject = new typeFactory.types[scope.newChildType]();
     		}, true);
 
     		scope.deleteItem = function(key) {
     			if(confirm('Delete '+key+' and his content ?')) {
-	    			if(scope.needKey) {
+	    			if(scope.typeObject.needKey) {
 	    				delete scope.data[key];
 	    			} else {
 	    				scope.data.splice(key,1);
@@ -33,22 +33,22 @@ jsonEditor.directive('jsontree', ['$compile', 'typeFactory', function($compile, 
     				scope.newChildValue = '';
     			}
 
-    			if(scope.needKey) {
-    				if(scope.newChildKey !== undefined && scope.newChildKey !== "") {
+    			if(scope.typeObject.needKey) {
+    				if(scope.newChildKey !== undefined && scope.newChildKey.trim() !== "") {
     					scope.newChildKey = scope.newChildKey.trim();
-    					if(scope.needValue) {
+    					if(scope.newChildTypeObject.needValue) {
     						scope.data[scope.newChildKey] = scope.newChildValue;
     					} else {
-    						scope.data[scope.newChildKey] = typeFactory.types[scope.newChildType].defaultValue;
+    						scope.data[scope.newChildKey] = scope.newChildTypeObject.defaultValue;
     					}
     				} else {
     					throw "You need to specifie a key !";
     				}
     			} else {
-    				if(scope.needValue) {
+    				if(scope.newChildTypeObject.needValue) {
     					scope.data.push(scope.newChildValue);
     				} else {
-    					scope.data.push(typeFactory.types[scope.newChildType].defaultValue);
+    					scope.data.push(scope.newChildTypeObject.defaultValue);
     				}
     			}
     		};
@@ -57,9 +57,9 @@ jsonEditor.directive('jsontree', ['$compile', 'typeFactory', function($compile, 
 
 				var addTemplate = '<button ng-show="!showAddForm" ng-click="showAddForm = true">Add</button>';
 				addTemplate += '<div ng-show="showAddForm">';
-				addTemplate += '<input ng-model="newChildKey" ng-show="needKey" name="key" type="text" value=""/>';
+				addTemplate += '<input ng-model="newChildKey" ng-show="typeObject.needKey" name="key" type="text" value=""/>';
 				addTemplate += '<select ng-model="newChildType" ng-options="option for option in allowedTypes" ng-init="newChildType=\''+scope.allowedTypes[0]+'\'"></select>';
-				addTemplate += '<input ng-model="newChildValue" ng-show="needValue" name="value" type="text" value=""/>';
+				addTemplate += '<input ng-model="newChildValue" ng-show="newChildTypeObject.needValue" name="value" type="text" value=""/>';
 				addTemplate += '<button ng-click="addItem()">Add</button>';
 				addTemplate += '<button ng-click="showAddForm = false">Cancel</button>';
 				addTemplate += '</div>';
@@ -69,8 +69,8 @@ jsonEditor.directive('jsontree', ['$compile', 'typeFactory', function($compile, 
 
 			var parsingData = function(data) {
 				for(key in data) {
-					var type = getRealType(data[key]);
-					template += typeFactory.types[type].getHtml(key, data[key]);
+					var type = new typeFactory.types[getRealType(data[key])]();
+					template += type.getHtml(key, data[key]);
 				}
 				template += getAddTemplate();
 			};
